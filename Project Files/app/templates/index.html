@@ -1,0 +1,498 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Animal Classification</title>
+    <link
+      href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link
+      href="{{ url_for('static', filename='css/main.css') }}"
+      rel="stylesheet"
+    />
+    <style>
+      .bg-dark {
+        background-color: #f7cac9 !important;
+      }
+      #result {
+        color: #0a1c4ed1;
+      }
+
+      .top-bar {
+        position: relative;
+        height: 35px;
+        background: #343148;
+      }
+
+      .top-bar .top-bar-left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .top-bar .top-bar-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .top-bar .text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        height: 35px;
+        padding: 0 10px;
+        text-align: center;
+        border-left: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .top-bar .text:last-child {
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .top-bar .text i {
+        font-size: 13px;
+        color: #ffffff;
+        margin-right: 5px;
+      }
+
+      .top-bar .text h2 {
+        color: #eeeeee;
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: 1px;
+        margin: 0;
+      }
+
+      .top-bar .text p {
+        color: #eeeeee;
+        font-size: 14px;
+        font-weight: 400;
+        margin: 0 0 0 5px;
+      }
+
+      .top-bar .social {
+        display: flex;
+        height: 35px;
+        font-size: 0;
+        justify-content: flex-end;
+      }
+
+      .top-bar .social a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 100%;
+        font-size: 16px;
+        color: #ffffff;
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .top-bar .social a:first-child {
+        border-left: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .top-bar .social a:hover {
+        color: #092a49;
+        background: #ffffff;
+      }
+
+      @media (min-width: 992px) {
+        .top-bar {
+          padding: 0 60px;
+        }
+      }
+
+      /**********************************/
+      /*********** Nav Bar CSS **********/
+      /**********************************/
+      .navbar {
+        position: relative;
+        transition: 0.5s;
+        z-index: 999;
+      }
+
+      .navbar.nav-sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar .navbar-brand {
+        margin: 0;
+        color: #ffffff;
+        font-size: 45px;
+        line-height: 0px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.5s;
+      }
+
+      .navbar .navbar-brand span {
+        color: #343148;
+        text-transform: lowercase;
+        transition: 0.5s;
+      }
+
+      .navbar.nav-sticky .navbar-brand span {
+        color: #ffffff;
+      }
+
+      .navbar .navbar-brand img {
+        max-width: 100%;
+        max-height: 40px;
+      }
+
+      .navbar-dark .navbar-nav .nav-link,
+      .navbar-dark .navbar-nav .nav-link:focus,
+      .navbar-dark .navbar-nav .nav-link:hover,
+      .navbar-dark .navbar-nav .nav-link.active {
+        padding: 10px 10px 8px 10px;
+        color: #ffffff;
+      }
+
+      .navbar-dark .navbar-nav .nav-link:hover,
+      .navbar-dark .navbar-nav .nav-link.active {
+        background: rgba(256, 256, 256, 0.1);
+        transition: none;
+      }
+
+      .navbar .dropdown-menu {
+        margin-top: 0;
+        border: 0;
+        border-radius: 0;
+        background: #f8f9fa;
+      }
+
+      @media (min-width: 992px) {
+        .navbar {
+          position: absolute;
+          width: 100%;
+          top: 35px;
+          padding: 20px 60px;
+          background: rgba(0, 0, 0, 0.1) !important;
+          z-index: 9;
+        }
+
+        .navbar.nav-sticky {
+          padding: 10px 60px;
+          background: #343148 !important;
+        }
+
+        .navbar a.nav-link {
+          padding: 8px 15px;
+          font-size: 14px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+        }
+      }
+
+      @media (max-width: 991.98px) {
+        .navbar {
+          padding: 15px;
+          background: #343148 !important;
+        }
+
+        .navbar .navbar-brand span {
+          color: #ffffff;
+        }
+
+        .navbar a.nav-link {
+          padding: 5px;
+        }
+
+        .navbar .dropdown-menu {
+          box-shadow: none;
+        }
+      }
+
+      body {
+        /* background-image: url("https://wallpaperaccess.com/full/327148.jpg"); */
+        background-color: #f7cac9;
+        background-size: cover;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="top-bar d-none d-md-block">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="top-bar-left">
+              <div class="text">
+                <i class="far fa-clock"></i>
+                <h2>8:00 - 9:00</h2>
+                <p>Mon - Fri</p>
+              </div>
+              <div class="text">
+                <i class="fa fa-phone-alt"></i>
+                <h2>+123 456 7890</h2>
+                <p>For Appointment</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="top-bar-right">
+              <div class="social">
+                <a href=""><i class="fab fa-twitter"></i></a>
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <a href=""><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Top Bar End -->
+
+    <!-- Nav Bar Start -->
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div class="container-fluid">
+        <a href="index.html" class="navbar-brand">Y<span>oo</span>ga</a>
+        <button
+          type="button"
+          class="navbar-toggler"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-between"
+          id="navbarCollapse"
+        >
+          <div class="navbar-nav ml-auto">
+            <a href="index.html" class="nav-item nav-link active">Home</a>
+            <a href="about.html" class="nav-item nav-link">About</a>
+            <a href="http://127.0.0.1:5000/" class="nav-item nav-link"
+              >Predict</a
+            >
+            <a href="portfolio.html" class="nav-item nav-link">Pose</a>
+            <a href="contact.html" class="nav-item nav-link">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Yoga Pose Classification using AI</a>
+        </div>
+    </nav> -->
+    <br /><br /><br />
+    <div class="container">
+      <div id="content" style="margin-top: 2em">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <div>
+                <h4>Upload Image Here To Identify the Animal</h4>
+                <form
+                  action="http://localhost:5000/"
+                  id="upload-file"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <label for="imageUpload" class="upload-label">
+                    Choose...
+                  </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="imageUpload"
+                    accept=".png, .jpg, .jpeg"
+                  />
+                </form>
+
+                <div class="image-section" style="display: none">
+                  <div class="img-preview">
+                    <div id="imagePreview"></div>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-info btn-lg"
+                      id="btn-predict"
+                    >
+                      Predict!
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  class="loader"
+                  id="loader-choose"
+                  style="display: none"
+                ></div>
+
+                <h3>
+                  <span id="result"> </span>
+                </h3>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="contentarea">
+                <h4>Real Time Photo Capture and Prediction</h4>
+                <div class="camera">
+                  <video id="video">Video stream not available.</video>
+                </div>
+                <div><button id="startbutton">Take photo</button></div>
+
+                <form
+                  action="http://localhost:5000/"
+                  id="take-file"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <canvas id="canvas"></canvas>
+                  <div class="output">
+                    <img
+                      id="photo"
+                      alt="The screen capture will appear in this box."
+                    />
+                  </div>
+                </form>
+
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-lg"
+                    id="btn-predict-take"
+                    onclick="setTimeout(myFunction, 3000)"
+                  >
+                    Predict!
+                  </button>
+                </div>
+              </div>
+
+              <div class="loader" id="loader-take" style="display: none"></div>
+
+              <h3>
+                <span id="result-take"> </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* JS comes here */
+      (function () {
+        var width = 340; // We will scale the photo width to this
+        var height; // This will be computed based on the input stream
+
+        var streaming = false;
+
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
+
+        function startup() {
+          video = document.getElementById("video");
+          canvas = document.getElementById("canvas");
+          photo = document.getElementById("photo");
+          startbutton = document.getElementById("startbutton");
+
+          navigator.mediaDevices
+            .getUserMedia({
+              video: true,
+              audio: false,
+            })
+            .then(function (stream) {
+              video.srcObject = stream;
+              video.play();
+            })
+            .catch(function (err) {
+              console.log("An error occurred: " + err);
+            });
+
+          video.addEventListener(
+            "canplay",
+            function (ev) {
+              if (!streaming) {
+                height = video.videoHeight / (video.videoWidth / width);
+
+                if (isNaN(height)) {
+                  height = width / (4 / 3);
+                }
+
+                video.setAttribute("width", width);
+                video.setAttribute("height", height);
+                canvas.setAttribute("width", width);
+                canvas.setAttribute("height", height);
+                streaming = true;
+              }
+            },
+            false
+          );
+
+          startbutton.addEventListener(
+            "click",
+            function (ev) {
+              takepicture();
+              ev.preventDefault();
+            },
+            false
+          );
+
+          clearphoto();
+        }
+
+        function clearphoto() {
+          var context = canvas.getContext("2d");
+          context.fillStyle = "#AAA";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          var data = canvas.toDataURL("image/png");
+          photo.setAttribute("src", data);
+        }
+
+        function takepicture() {
+          var context = canvas.getContext("2d");
+          if (width && height) {
+            canvas.width = 340;
+            canvas.height;
+            context.drawImage(video, 0, 0, width, height);
+
+            var data = canvas.toDataURL("image/jpg");
+            photo.setAttribute("src", data);
+          } else {
+            clearphoto();
+          }
+        }
+
+        window.addEventListener("load", startup, false);
+      })();
+
+      $("#btn-predict-take").click(function () {
+        var form_data = new FormData($("#take-file")[0]);
+
+        // Show loading animation
+        $(this).hide();
+        $("#loader-take").show();
+      });
+    </script>
+  </body>
+
+  <footer>
+    <script
+      src="{{ url_for('static', filename='js/main.js') }}"
+      type="text/javascript"
+    ></script>
+  </footer>
+</html>
