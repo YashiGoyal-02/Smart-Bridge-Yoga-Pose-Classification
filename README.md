@@ -3,3 +3,6 @@ The project "Yoga Pose Classification" aims to develop a system which can classi
 
 
 Demo Video Link - https://drive.google.com/file/d/13tnG_nAQRXbQbvCZg3eNzN6ZU5mXIMyZ/view?usp=sharing 
+
+
+Dataset Link - https://www.kaggle.com/datasets/elysian01/yoga-pose-classification
